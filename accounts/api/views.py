@@ -40,18 +40,15 @@ class AccountViewSet(viewsets.ViewSet):
             }, status=400)
 
         user = serializer.save()
-<<<<<<< Updated upstream
         return Response({
             'success': True,
             'user': UserSerializer(user).data
         })
-=======
         django_login(request, user)
         return Response({
             'success': True,
             'user': UserSerializer(user).data
         }, status = 201)
->>>>>>> Stashed changes
 
     @action(methods=['POST'], detail=False)
     def login(self, request):
