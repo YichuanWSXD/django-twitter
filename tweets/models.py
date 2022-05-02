@@ -7,6 +7,11 @@ class Tweet(models.Model):
     content = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class META:
+        #composite index
+        index_together = (('user', 'created_at'),)
+        ordering = ('user', '-created_at')
+
     @property
     def hours_to_now(self):
         # datetime.now UTC

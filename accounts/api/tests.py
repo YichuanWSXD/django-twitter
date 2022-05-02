@@ -1,6 +1,6 @@
-from django.test import TestCase
+
 from rest_framework.test import APIClient
-from django.contrib.auth.models import User
+from testing.testcases import TestCase
 
 LOGIN_URL = '/api/accounts/login/'
 LOGOUT_URL = '/api/accounts/logout/'
@@ -13,15 +13,11 @@ class AccountApiTests(TestCase):
     def setUp(self):
         # this function will be running when test function executes
         self.client = APIClient()
-        self.user = self.createUser(
+        self.user = self.create_user(
             username='admin',
             email='admin@wsxd.com',
             password='correct password',
         )
-
-    def createUser(self, username, email, password):
-        # Should not be User.objects.create() since password needs to be encrypted
-        return User.objects.create_user(username, email, password)
 
     def test_login(self):
         # tests need to be started with test_
@@ -116,7 +112,7 @@ class AccountApiTests(TestCase):
 
         # success
         response = self.client.post(SIGNUP_URL, data)
-        # print(response.data)
+        # print(response)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data['user']['username'], 'someone')
 
