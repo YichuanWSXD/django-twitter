@@ -40,10 +40,6 @@ class AccountViewSet(viewsets.ViewSet):
             }, status=400)
 
         user = serializer.save()
-        return Response({
-            'success': True,
-            'user': UserSerializer(user).data
-        })
         django_login(request, user)
         return Response({
             'success': True,
