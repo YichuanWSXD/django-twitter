@@ -17,11 +17,13 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 from rest_framework import routers
-from accounts.api import views
+from accounts.api.views import UserViewSet, AccountViewSet
+from tweets.api.views import TweetViewSet
 
 router = routers.DefaultRouter()
-router.register(r'api/users', views.UserViewSet)
-router.register(r'api/accounts', views.AccountViewSet, basename='accounts')
+router.register(r'api/users', UserViewSet)
+router.register(r'api/accounts', AccountViewSet, basename='accounts')
+router.register(r'api/tweets', TweetViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
