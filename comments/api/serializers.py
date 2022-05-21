@@ -27,8 +27,18 @@ class CommentSerializerForCreate(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        return Comment.object.create(
+        return Comment.objects.create(
             user_id=validated_data['user_id'],
             tweet_id=validated_data['tweet_id'],
             content=validated_data['content'],
         )
+
+class CommentSerializerForUpdate(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('content', )
+
+    def update(self, instance, validated_data):
+        instance.content = validated_data['content']
+        instance.save()
+        return instance
