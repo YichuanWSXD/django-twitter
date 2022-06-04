@@ -3,8 +3,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from newsfeeds.services import NewsFeedService
-from tweets.api.serializers import TweetCreateSerializer, TweetSerializer
+from tweets.api.serializers import TweetCreateSerializer, TweetSerializer, TweetSerializerWithComments
 from tweets.models import Tweet
+from utils.decorator import required_params
 
 
 class TweetViewSet(viewsets.GenericViewSet,
@@ -17,7 +18,7 @@ class TweetViewSet(viewsets.GenericViewSet,
     serializer_class = TweetCreateSerializer
 
     def get_permissions(self):
-        if self.action == 'list':
+        if self.action in ['list', 'retrieve']:
             return [AllowAny()]
         return [IsAuthenticated()]
 
@@ -39,12 +40,11 @@ class TweetViewSet(viewsets.GenericViewSet,
         NewsFeedService.fanout_to_followers(tweet)
         return Response(TweetSerializer(tweet).data, status=201)
 
+    @required_params(params=['user_id'])
     def list(self, request, *args, **kwargs):
         """
         Overload list method - don't show all tweets, but must select by user_id as a condition
         """
-        if 'user_id' not in request.query_params:
-            return Response('missing user_id', status=400)
 
         tweets = Tweet.objects.filter(
             user_id=request.query_params['user_id']
@@ -52,3 +52,9 @@ class TweetViewSet(viewsets.GenericViewSet,
         serializer = TweetSerializer(tweets, many=True)
         # Under normal circumstance, json defaults to dictionary
         return Response({'tweets': serializer.data})
+
+    def retrieve(self, request, *args, **kwargs):
+        # <HOMEWORK 1> with parameter with_all_comments to decide if the query should return all comments
+        # <HOMEWORK 2> with parameter with_preview_comments to decide if it returns the first three comments
+        tweet = self.get_object()
+        return Response(TweetSerializerWithComments(tweet).data)
