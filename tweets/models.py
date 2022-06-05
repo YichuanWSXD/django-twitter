@@ -26,5 +26,5 @@ class Tweet(models.Model):
     def like_set(self):
         return Like.objects.filter(
             content_type=ContentType.objects.get_for_model(Tweet),
-            objects_id=self.id,
+            object_id=self.id,
         ).order_by('-created_at')
