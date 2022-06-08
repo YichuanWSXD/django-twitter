@@ -8,7 +8,7 @@ from likes.models import Like
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from utils.decorator import required_params
+from utils.decorators import required_params
 from rest_framework.decorators import action
 
 

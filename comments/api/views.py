@@ -7,7 +7,7 @@ from comments.api.serializers import (
     CommentSerializer,
     CommentSerializerForCreate, CommentSerializerForUpdate
 )
-from utils.decorator import required_params
+from utils.decorators import required_params
 from inbox.services import NotificationService
 
 

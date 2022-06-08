@@ -6,7 +6,7 @@ from inbox.api.serializers import (
 )
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from utils.decorator import required_params
+from utils.decorators import required_params
 
 class NotificationViewSet(
     viewsets.GenericViewSet,
