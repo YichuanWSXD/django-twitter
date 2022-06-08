@@ -18,7 +18,7 @@ class LikeViewSet(viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = LikeSerializerForCreate
 
-    @required_params(request_attr='data', params=['content_type', 'object_id'])
+    @required_params(method='POST', params=['content_type', 'object_id'])
     def create(self, request, *args, **kwargs):
         serializer = LikeSerializerForCreate(
             data=request.data,
@@ -35,7 +35,7 @@ class LikeViewSet(viewsets.GenericViewSet):
             status=status.HTTP_201_CREATED,
         )
     @action(methods=['POST'], detail=False)
-    @required_params(request_attr='data', params=['content_type', 'object_id'])
+    @required_params(method='POST', params=['content_type', 'object_id'])
     def cancel(self, request, *args, **kwargs):
         serializer = LikeSerializerForCancel(
             data=request.data,
