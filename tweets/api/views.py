@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from newsfeeds.services import NewsFeedService
 from tweets.api.serializers import TweetSerializerForCreate, TweetSerializer, TweetSerializerForDetail
 from tweets.models import Tweet
-from utils.decorator import required_params
+from utils.decorators import required_params
 
 
 class TweetViewSet(viewsets.GenericViewSet,
