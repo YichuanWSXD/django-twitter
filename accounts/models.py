@@ -7,7 +7,7 @@ class UserProfile(models.Model):
     avatar = models.FileField(null=True)
 
     nickname = models.CharField(null=True, max_length=200)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models .DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):

@@ -48,7 +48,7 @@ class AccountApiTests(TestCase):
         # if failed, return status 405 = METHOD_NOT_ALLOWED
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(response.data['user'], None)
-        self.assertEqual(response.data['user']['email'], 'admin@wsxd.com')
+        self.assertEqual(response.data['user']['id'], self.user.id)
 
         # Test login status
         response = self.client.get(LOGIN_STATUS_URL)
