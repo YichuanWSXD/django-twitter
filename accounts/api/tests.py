@@ -49,14 +49,7 @@ class AccountApiTests(TestCase):
         })
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(response.data['user'], None)
-<<<<<<< Updated upstream
-        self.assertEqual(response.data['user']['email'], 'admin@wsxd.com')
-
-        # Test login status
-=======
-        self.assertEqual(response.data['user']['id'], self.user.id)
         # 验证已经登录了
->>>>>>> Stashed changes
         response = self.client.get(LOGIN_STATUS_URL)
         self.assertEqual(response.data['has_logged_in'], True)
 
