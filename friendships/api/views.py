@@ -6,29 +6,27 @@ from rest_framework.response import Response
 
 from friendships.api.serializer import FollowerSerializer, FriendshipSerializerForCreate, FollowingSerializer
 from friendships.models import Friendship
+from utils.paginations import FriendshipPagination
+
 
 class FriendshipViewSet(viewsets.GenericViewSet):
+    serializer_class = FriendshipSerializerForCreate
     queryset = User.objects.all()
+    pagination_class = FriendshipPagination
 
     @action(methods=['GET'], detail=True, permission_classes=[AllowAny])
     def followers(self, request, pk):
         friendships = Friendship.objects.filter(to_user_id=pk).order_by('-created_at')
         page = self.paginate_queryset(friendships)
         serializer = FollowerSerializer(page, many=True, context={'request': request})
-        return Response(
-            {'followers': serializer.data},
-            status=status.HTTP_200_OK,
-        )
+        return self.get_paginated_response(serializer.data)
 
     @action(methods=['GET'], detail=True, permission_classes=[AllowAny])
     def followings(self, request, pk):
         friendships = Friendship.objects.filter(from_user_id=pk).order_by('-created_at')
         page = self.paginate_queryset(friendships)
         serializer = FollowingSerializer(page, many=True, context={'request': request})
-        return Response(
-            {'followings': serializer.data},
-            status=status.HTTP_200_OK,
-        )
+        return self.get_paginated_response(serializer.data)
 
     @action(methods=['POST'], detail=True, permission_classes=[IsAuthenticated])
     def follow(self, request, pk):
