@@ -155,6 +155,7 @@ class TweetAPITests(TestCase):
         self.assertEqual(response.data['user']['avatar_url'], None)
 
     def test_pagination(self):
+
         page_size = EndlessPagination.page_size
 
         # create page_size * 2 tweets
