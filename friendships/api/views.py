@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from friendships.api.serializer import FollowerSerializer, FriendshipSerializerForCreate, FollowingSerializer
 from friendships.models import Friendship
-from utils.paginations import FriendshipPagination
+from friendships.api.paginations import FriendshipPagination
 
 
 class FriendshipViewSet(viewsets.GenericViewSet):
