@@ -1,9 +1,8 @@
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.core.cache import caches
 
 from accounts.models import UserProfile
-from twitter.cache import USER_PATTERN, USER_PROFILE_PATTERN
+from twitter.cache import USER_PROFILE_PATTERN
 
 cache = caches['testing'] if settings.TESTING else caches['default']
 
@@ -43,7 +42,7 @@ class UserService:
         key = USER_PROFILE_PATTERN.format(user_id=user_id)
         cache.delete(key)
 
-    @classmethod
-    def invalidate_user(cls, user_id):
-        key = USER_PATTERN.format(user_id=user_id)
-        cache.delete(key)
+    # @classmethod
+    # def invalidate_user(cls, user_id):
+    #     key = USER_PATTERN.format(user_id=user_id)
+    #     cache.delete(key)

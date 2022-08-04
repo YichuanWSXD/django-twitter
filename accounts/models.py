@@ -34,7 +34,7 @@ User.profile = property(get_profile)
 # pre_delete.connect(user_changed, sender=User)
 # post_save.connect(user_changed, sender=User)
 pre_delete.connect(invalidate_object_cache, sender=User)
-pre_delete.connect(invalidate_object_cache, sender=User)
+post_save.connect(invalidate_object_cache, sender=User)
 
 pre_delete.connect(profile_changed, sender=UserProfile)
 post_save.connect(profile_changed, sender=UserProfile)

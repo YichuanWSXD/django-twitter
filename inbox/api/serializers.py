@@ -1,10 +1,14 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from notifications.models import Notification
 from accounts.api.serializers import UserSerializer
 
 class NotificationSerializer(serializers.ModelSerializer):
     recipient = UserSerializer()
-
+    def get_recipient(self, instance):
+        return UserSerializer(
+            MemcachedHelper.get_object_through_cache(User, instance.actor_object_id)
+        )
     class Meta:
         model = Notification
         fields =(
