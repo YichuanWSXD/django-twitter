@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save, pre_delete
+
+from friendships.listeners import invalidate_following_cache
 
 
 class Friendship(models.Model):
@@ -28,3 +31,5 @@ class Friendship(models.Model):
     def __str__(self):
         return f'{self.from_user_id} followed {self.to_user_id}'
 
+pre_delete.connect(invalidate_following_cache, sender=Friendship)
+post_save.connect(invalidate_following_cache, sender=Friendship)
