@@ -1,4 +1,5 @@
 from django.contrib.contenttypes.models import ContentType
+from django.core.cache import caches
 from django.test import TestCase as DjangoTestCase
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
@@ -54,3 +55,6 @@ class TestCase(DjangoTestCase):
 
     def create_friendship(self, from_user, to_user):
         return FriendshipService.follow(from_user.id, to_user.id)
+
+    def clear_cache(self):
+        caches['testing'].clear()

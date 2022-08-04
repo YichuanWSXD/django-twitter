@@ -12,6 +12,7 @@ class FollowingUserIdSetMixin:
     def following_user_id_set(self: serializers.ModelSerializer):
         if self.context['request'].user.is_anonymous:
             return {}
+        # memcached cache can be released for three reasons: overtime, deletion and not enough memory (LRU)
         if hasattr(self, '_cached_following_user_id_set'):
             return self._cached_following_user_id_set
         user_id_set = FriendshipService.get_following_user_id_set(
@@ -43,7 +44,7 @@ class FriendshipSerializerForCreate(serializers.ModelSerializer):
             to_user_id=to_user_id,
         )
 
-class FollowerSerializer(serializers.ModelSerializer):
+class FollowerSerializer(serializers.ModelSerializer, FollowingUserIdSetMixin):
     user = UserSerializerForFriendship(source='from_user')
     created_at = serializers.DateTimeField()
     has_followed = serializers.SerializerMethodField()
@@ -56,7 +57,7 @@ class FollowerSerializer(serializers.ModelSerializer):
         if self.context['request'].user.is_anonymous:
             return False
         # <TODO> how to optimize?
-        return FriendshipService.has_followed(self.context['request'].user, obj.from_user)
+        return obj.from_user_id in self.following_user_id_set
 
 class FollowingSerializer(serializers.ModelSerializer, FollowingUserIdSetMixin):
     user = UserSerializerForFriendship(source='to_user')

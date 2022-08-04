@@ -9,6 +9,9 @@ class FriendshipService(object):
 
     @classmethod
     def get_followers(cls, user):
+        # friendships = Friendship.objects.filter(to_user=user)
+        # follower_ids = [friendship.from_user_id for friendship in friendships]
+        # followers = User.objects.filter(id__in=follower_ids)
         friendships = Friendship.objects.filter(
             to_user=user,
         ).prefetch_related('from_user')
@@ -21,7 +24,7 @@ class FriendshipService(object):
         if user_id_set is not None:
             return user_id_set
 
-        friendships = Friendship.objects.filter(form_user_id=from_user_id)
+        friendships = Friendship.objects.filter(from_user_id=from_user_id)
         user_id_set = set([
             fs.to_user_id
             for fs in friendships
@@ -34,12 +37,12 @@ class FriendshipService(object):
         key = FOLLOWINGS_PATTERN.format(user_id=from_user_id)
         cache.delete(key)
 
-    @classmethod
-    def has_followed(cls, from_user, to_user):
-        return Friendship.objects.filter(
-            from_user=from_user,
-            to_user=to_user,
-        )
+    # @classmethod
+    # def has_followed(cls, from_user, to_user):
+    #     return Friendship.objects.filter(
+    #         from_user=from_user,
+    #         to_user=to_user,
+    #     ).exists()
 
     @classmethod
     def follow(cls, from_user_id, to_user_id):
