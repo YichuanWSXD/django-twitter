@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from accounts.services import UserService
 from tweets.constants import TweetPhotoStatus, TWEET_PHOTO_STATUS_CHOICES
 from utils.time_helpers import utc_now
 from django.contrib.contenttypes.models import ContentType
@@ -15,6 +15,10 @@ class Tweet(models.Model):
         #composite index
         index_together = (('user', 'created_at'),)
         ordering = ('user', '-created_at')
+
+    @property
+    def cached_user(self):
+        return UserService.get_user_through_cache(self.user_id)
 
     @property
     def hours_to_now(self):

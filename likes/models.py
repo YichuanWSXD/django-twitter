@@ -3,7 +3,14 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
+from accounts.services import UserService
+
+
 class Like(models.Model):
+    @property
+    def cached_user(self):
+        return UserService.get_user_through_cache(self.user_id)
+
     object_id = models.PositiveIntegerField()
     content_type = models.ForeignKey(
         ContentType,
