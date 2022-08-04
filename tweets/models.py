@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from accounts.services import UserService
 from tweets.constants import TweetPhotoStatus, TWEET_PHOTO_STATUS_CHOICES
+from utils.memcached_helper import MemcachedHelper
 from utils.time_helpers import utc_now
 from django.contrib.contenttypes.models import ContentType
 from likes.models import Like
@@ -18,7 +18,7 @@ class Tweet(models.Model):
 
     @property
     def cached_user(self):
-        return UserService.get_user_through_cache(self.user_id)
+        return MemcachedHelper.get_object_through_cache(User, self.user_id)
 
     @property
     def hours_to_now(self):
