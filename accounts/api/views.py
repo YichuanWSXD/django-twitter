@@ -11,6 +11,7 @@ from django.contrib.auth import (
 )
 from accounts.api.serializers import SignupSerializer, LoginSerializer
 from accounts.models import UserProfile
+from comments.api.permissions import IsObjectOwner
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
@@ -40,7 +41,6 @@ class AccountViewSet(viewsets.ViewSet):
             }, status=400)
 
         user = serializer.save()
-
         user.profile
 
         django_login(request, user)
@@ -95,5 +95,5 @@ class UserProfileViewSet(
     viewsets.mixins.UpdateModelMixin,
 ):
     queryset = UserProfile
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsObjectOwner,)
     serializer_class = UserProfileSerializerForUpdate
