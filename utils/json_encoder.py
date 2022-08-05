@@ -1,6 +1,6 @@
 import decimal
 import uuid
-from datetime import datetime
+import datetime
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.utils.duration import duration_iso_string
