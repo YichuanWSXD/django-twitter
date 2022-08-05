@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 
 from comments.models import Comment
+from friendships.models import Friendship
 from friendships.services import FriendshipService
 from likes.models import Like
 from newsfeeds.models import NewsFeed
@@ -60,3 +61,6 @@ class TestCase(DjangoTestCase):
     def clear_cache(self):
         RedisClient.clear()
         caches['testing'].clear()
+
+    def create_friendship(self, from_user, to_user):
+        return Friendship.objects.create(from_user=from_user, to_user=to_user)
