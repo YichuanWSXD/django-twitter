@@ -9,6 +9,7 @@ from friendships.services import FriendshipService
 from likes.models import Like
 from newsfeeds.models import NewsFeed
 from tweets.models import Tweet
+from utils.redis_client import RedisClient
 
 
 class TestCase(DjangoTestCase):
@@ -57,4 +58,5 @@ class TestCase(DjangoTestCase):
         return FriendshipService.follow(from_user.id, to_user.id)
 
     def clear_cache(self):
+        RedisClient.clear()
         caches['testing'].clear()
