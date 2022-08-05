@@ -1,4 +1,4 @@
-from twitter.settings import REDIS_KEY_EXPIRE_TIME
+from twitter.settings import REDIS_KEY_EXPIRE_TIME, REDIS_LIST_LENGTH_LIMIT
 from utils.redis_client import RedisClient
 from utils.redis_serializers import DjangoModelSerializer
 
@@ -10,7 +10,8 @@ class RedisHelper:
         conn = RedisClient.get_connection()
 
         serialized_list = []
-        for obj in objects:
+        # for obj in objects:
+        for obj in objects[:REDIS_LIST_LENGTH_LIMIT]:
             serialized_data = DjangoModelSerializer.serialize(obj)
             serialized_list.append(serialized_data)
 
@@ -41,3 +42,4 @@ class RedisHelper:
             return
         serialized_data = DjangoModelSerializer.serialize(obj)
         conn.lpush(key, serialized_data)
+        conn.ltrim(key, 0, REDIS_LIST_LENGTH_LIMIT - 1)
