@@ -15,6 +15,10 @@ class Tweet(models.Model):
     content = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    # New field needs to set null to True, otherwise, all existed records will update to defaulted 0.
+    likes_count = models.IntegerField(default=0, null=True)
+    comments_count = models.IntegerField(default=0, null=True)
+
     class META:
         #composite index
         index_together = (('user', 'created_at'),)
